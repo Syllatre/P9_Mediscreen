@@ -24,18 +24,18 @@ public class PatientController {
 
     @GetMapping("/patient/list")
     public String home(Model model) {
-        List<Patient> patients = patientService.findAll();
-        model.addAttribute("patients", patients);
+        List<Patient> patient = patientService.findAll();
+        model.addAttribute("patient", patient);
         log.info("Display patient List");
         return "patient/list";
     }
 
     @GetMapping("/patient/add")
-    public ResponseEntity<String> addPatientForm(Model model) {
+    public String addPatientForm(Model model) {
         Patient patient = new Patient();
         model.addAttribute("patient", patient);
         log.info("return new form");
-        return new ResponseEntity<>("patient/add", HttpStatus.OK) ;
+        return "patient/add";
     }
 
     @PostMapping("/patient/validate")

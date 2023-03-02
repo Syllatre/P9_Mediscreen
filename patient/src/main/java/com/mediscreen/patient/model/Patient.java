@@ -29,7 +29,7 @@ public class Patient {
     private Long idPatient;
 
     @NotEmpty
-    @Column(name = "patient",nullable = false,length = 45)
+    @Column(name = "prenom",nullable = false,length = 45)
     private String prenom;
     @NotEmpty
     @Column(name = "nom",nullable = false,length = 45)
@@ -41,7 +41,7 @@ public class Patient {
     @Column(name = "genre",nullable = false,length = 1)
     private String genre;
     @NotEmpty
-    @Column(name = "nummero_telephone",nullable = false,length = 10)
+    @Column(name = "numero_telephone",nullable = false,length = 10)
     private String numeroTelephone;
     @NotEmpty
     @Column(name = "adresse",nullable = false,length = 250)
