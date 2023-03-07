@@ -4,8 +4,6 @@ import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.service.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +43,7 @@ public class PatientController {
             return "patient/add";
         }
         patientService.create(patient);
-        log.info("Patient " + patient.getPrenom()+" "+patient.getNom() + " was add");
+        log.info("Patient " + patient.getPrenom() + " " + patient.getNom() + " was add");
         model.addAttribute("patient", patientService.findAll());
         return "redirect:/patient/list";
     }
@@ -60,7 +58,7 @@ public class PatientController {
 
     @PostMapping("/patient/update/{idPatient}")
     public String updatePatient(@PathVariable("idPatient") Long idPatient, @Valid Patient patient,
-                            BindingResult result, Model model) {
+                                BindingResult result, Model model) {
         if (result.hasErrors()) {
             log.info("informations is not valid");
             return "patient/update";
