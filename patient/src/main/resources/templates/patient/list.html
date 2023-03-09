@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row"><h2>Liste des Patients</h2></div>
     <div class="row">
-        <a href="/patient/add" class="btn btn-primary btn-sm">Add New</a>
+        <a href="/patient/add" class="btn btn-primary btn-sm">Ajouter un nouveau Patient</a>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -32,9 +32,9 @@
                 <td th:text="${p.genre}"></td>
                 <td th:text="${p.numeroTelephone}"></td>
                 <td th:text="${p.adresse}"></td>
+                <td>
                     <a th:href="@{/patient/update/{id}(id=${p.idPatient})}">Edit</a>&nbsp;|&nbsp;
                     <a th:href="@{/patient/delete/{id}(id=${p.idPatient})}">Delete</a>
-                    </a>
                 </td>
             </tr>
             </tbody>
