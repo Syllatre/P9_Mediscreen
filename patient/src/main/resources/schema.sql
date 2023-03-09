@@ -1,8 +1,9 @@
+
 CREATE SCHEMA IF NOT EXISTS `patient`;
 USE `patient`;
 
 
-CREATE TABLE `patient` (
+CREATE TABLE IF NOT EXISTS `patient` (
   `idpatient` int NOT NULL AUTO_INCREMENT,
   `prenom` varchar(45) NOT NULL,
   `nom` varchar(45) NOT NULL,
