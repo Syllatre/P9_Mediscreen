@@ -44,8 +44,8 @@ public class PatientControllerTest {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date_naissance1 = df.parse("1950-08-10");
         Date date_naissance2 = df.parse("1990-09-09");
-        patient1 = new Patient(20L, "prenom1", "nom1", date_naissance1, "M", "tel1", "adresse1");
-        patient2 = new Patient(21L, "prenom2", "nom2", date_naissance2, "M", "tel2", "adresse2");
+        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "tel10000000", "adresse1");
+        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "tel20000000", "adresse2");
     }
 
     @Test
