@@ -46,5 +46,12 @@ public class Patient {
     @Column(name = "adresse", length = 250)
     private String adresse;
 
-
+    public Patient(String prenom, String nom, Date dateNaissance, String genre, String numeroTelephone, String adresse) {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.dateNaissance = dateNaissance;
+        this.genre = genre;
+        this.numeroTelephone = numeroTelephone;
+        this.adresse = adresse;
+    }
 }

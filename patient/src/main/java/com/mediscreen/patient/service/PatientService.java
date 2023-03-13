@@ -1,5 +1,6 @@
 package com.mediscreen.patient.service;
 
+import com.mediscreen.patient.exception.NotFoundException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.repository.PatientRepository;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,10 @@ public class PatientService {
     }
 
     public Patient findById(Long id) {
-        Optional<Patient> findById = patientRepository.findById(id);
-        return findById.get();
+        return patientRepository.findById(id).orElseThrow(()->{
+            log.error("Patient non trouvé");
+            return new NotFoundException("patientId " + id + " non trouvé");
+        });
     }
 
     public List<Patient> findAll() {

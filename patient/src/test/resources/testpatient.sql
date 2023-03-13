@@ -1,8 +1,8 @@
-CREATE SCHEMA IF NOT EXISTS `patienttest`;
-USE `patienttest`;
+CREATE SCHEMA IF NOT EXISTS `testpatient`;
+USE `testpatient`;
 
 
-CREATE TABLE IF NOT EXISTS `patienttest` (
+CREATE TABLE IF NOT EXISTS `testpatient`.`patient` (
   `idpatient` int NOT NULL AUTO_INCREMENT,
   `prenom` varchar(45) NOT NULL,
   `nom` varchar(45) NOT NULL,
@@ -12,4 +12,6 @@ CREATE TABLE IF NOT EXISTS `patienttest` (
   `adresse` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`idpatient`),
   UNIQUE KEY `idpatient_UNIQUE` (`idpatient`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE `patient` AUTO_INCREMENT = 1;

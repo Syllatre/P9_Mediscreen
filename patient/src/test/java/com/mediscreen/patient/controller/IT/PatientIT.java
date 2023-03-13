@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @TestPropertySource({"/applicationtest.properties"})
-@Sql(scripts = "/patienttest.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/testpatient.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class PatientIT {
     private Patient patient1;
 
@@ -46,8 +47,8 @@ public class PatientIT {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date_naissance1 = df.parse("1950-08-10");
         Date date_naissance2 = df.parse("1990-09-09");
-        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "tel1", "adresse1");
-        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "tel2", "adresse2");
+        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "0120254256", "adresse1");
+        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "0123521524", "adresse2");
     }
 
 
@@ -60,6 +61,7 @@ public class PatientIT {
 
 
     @Test
+    @Order(2)
     void addValidePatient() throws Exception {
         String dateNaissance = new SimpleDateFormat("yyyy-MM-dd").format(patient1.getDateNaissance());
         mockMvc.perform(post("/patient/validate")

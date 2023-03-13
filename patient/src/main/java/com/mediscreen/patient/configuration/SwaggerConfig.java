@@ -15,7 +15,7 @@
 //    public Docket api() {
 //        return new Docket(DocumentationType.SWAGGER_2)
 //                .select()
-//                .apis(RequestHandlerSelectors.basePackage("com.mediscreen.patient"))
+//                .apis(RequestHandlerSelectors.any())
 //                .paths(PathSelectors.any())
 //                .build();
 //    }

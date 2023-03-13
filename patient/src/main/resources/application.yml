@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/testpatient?useSSL=false&serverTimezone=UTC
+    username: root
+    password: example
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+#    hibernate:
+#      ddl-auto: create-drop # cette ligne indique à Hibernate de recréer la base de données à chaque exécution des tests
+    show-sql: true # cette ligne active l'affichage des requêtes SQL générées par Hibernate dans la console
