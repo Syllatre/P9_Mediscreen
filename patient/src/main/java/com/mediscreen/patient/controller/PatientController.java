@@ -1,6 +1,5 @@
 package com.mediscreen.patient.controller;
 
-import com.mediscreen.patient.exception.NotFoundException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -97,7 +96,8 @@ public class PatientController {
         Boolean updated = patientService.updatePatient(idPatient, patient);
         if (!updated) {
             model.addAttribute("patient", patientService.findAll());
-            log.info("Patient " + patient + " was updated");}
+            log.info("Patient " + patient + " was updated");
+        }
         return "redirect:/patient/list";
     }
 
@@ -109,8 +109,8 @@ public class PatientController {
     @GetMapping("/patient/delete/{idPatient}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deletePatient(@Parameter(description = "Id du patient", required = true) @PathVariable("idPatient") Long id, Model model) {
-            patientService.delete(id);
-            log.info("Patient " + id + " was deleted");
+        patientService.delete(id);
+        log.info("Patient " + id + " was deleted");
         return "redirect:/patient/list";
     }
 }
