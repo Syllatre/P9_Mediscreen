@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Update Patient</h2>
+    </div>
+
+    <div class="row">
+        <form action="#" th:action="@{/patients/update/{id}(id=${patient.idPatient})}" th:object="${patient}" method="Put" class="form-horizontal" style="width: 100%">
+            <label for="firstName"> </label>
+            <input class="form-control my-3 bg-light" id="firstName" placeholder="FirstName" type="text" autofocus name="firstName"
+                   th:field="*{firstName}">
+            <span class="has-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            <label for="surname"> </label>
+            <input class="form-control my-3 bg-light" id="surname" placeholder="Surname" type="text" th:field="*{surname}">
+            <span class="has-error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+            <label for="dateOfBirthday"> </label>
+            <input class="form-control my-3 bg-light" id="dateOfBirthday" placeholder="Date Of Birthday" type="date" th:field="*{dateOfBirthday}">
+            <span class="has-error" th:if="${#fields.hasErrors('dateOfBirthday')}" th:errors="*{dateOfBirthday}"></span>
+            <label for="gender"> </label>
+            <select class="form-control my-3 bg-light" id="gender" name="gender" th:field="*{gender}">
+                <option value="" th:selected="${gender == null}">Select your gender</option>
+                <option value="W" th:selected="${gender == 'W'}">Women</option>
+                <option value="M" th:selected="${gender == 'M'}">Men</option>
+            </select>
+            <span class="has-error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+            <label for="phoneNumber"> </label>
+            <input class="form-control my-3 bg-light" id="phoneNumber" placeholder="Phone Number" type="text" th:field="*{phoneNumber}">
+            <span class="has-error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+            <label for="address"> </label>
+            <input class="form-control my-3 bg-light" id="address" placeholder="Address" type="text" th:field="*{address}">
+            <span class="has-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+            <div class="row">
+                <div class="col sm-12">
+                    <a class="btn btn-danger btn-sm" href="/patients/list">Annuler</a>
+                    <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

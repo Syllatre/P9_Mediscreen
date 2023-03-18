@@ -41,9 +41,9 @@ public class PatientService {
         Optional<Patient> patientPresent = patientRepository.findById(id);
         if (patientPresent.isPresent()) {
             Patient updatePatient = patientPresent.get();
-            updatePatient.setPrenom(patient.getPrenom());
-            updatePatient.setNom(patient.getNom());
-            updatePatient.setDateNaissance(patient.getDateNaissance());
+            updatePatient.setFirstName(patient.getFirstName());
+            updatePatient.setSurname(patient.getSurname());
+            updatePatient.setDateOfBirthday(patient.getDateOfBirthday());
 
             patientRepository.save(updatePatient);
             log.debug("Patient " + id + " was updated");

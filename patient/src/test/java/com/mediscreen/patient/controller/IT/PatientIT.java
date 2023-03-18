@@ -15,16 +15,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,58 +42,55 @@ public class PatientIT {
 
     @BeforeEach
     public void setUp() throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_naissance1 = df.parse("1950-08-10");
-        Date date_naissance2 = df.parse("1990-09-09");
-        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "0120254256", "adresse1");
-        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "0123521524", "adresse2");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date_naissance1 = LocalDate.parse("1950-08-10", dtf);
+        LocalDate date_naissance2 =  LocalDate.parse("1990-09-09",dtf);
+        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "tel10000000", "adresse1");
+        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "tel20000000", "adresse2");
     }
 
 
     @Test
     public void displayPatientListIT() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/patient/list"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/patients/list"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
 
     @Test
-    @Order(2)
     void addValidePatient() throws Exception {
-        String dateNaissance = new SimpleDateFormat("yyyy-MM-dd").format(patient1.getDateNaissance());
-        mockMvc.perform(post("/patient/validate")
-                        .param("prenom", patient1.getPrenom())
-                        .param("nom", patient1.getNom())
-                        .param("dateNaissance", dateNaissance)
-                        .param("genre", patient1.getGenre())
-                        .param("numeroTelephone", patient1.getNumeroTelephone())
-                        .param("adresse", patient1.getAdresse()))
+        mockMvc.perform(post("/patients/validate")
+                        .param("firstName", patient1.getFirstName())
+                        .param("surname", patient1.getSurname())
+                        .param("dateOfBirthday", patient1.getDateOfBirthday().toString())
+                        .param("gender", patient1.getGender())
+                        .param("phoneNumber", patient1.getPhoneNumber())
+                        .param("address", patient1.getAddress()))
                 .andExpect(model().hasNoErrors())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patient/list"));
+                .andExpect(redirectedUrl("/patients/list"));
 
         Patient patientSaved = patientService.findById(1L);
-        assertEquals(patientSaved.getPrenom(), "prenom1");
+        assertEquals(patientSaved.getFirstName(), "prenom1");
         patientService.delete(1L);
     }
 
     @Test
     void updatePatient() throws Exception {
-        String dateNaissance = new SimpleDateFormat("yyyy-MM-dd").format(patient1.getDateNaissance());
         patientService.create(patient1);
-        mockMvc.perform(post("/patient/update/1")
-                        .param("prenom", patient1.getPrenom())
-                        .param("nom", "nom2")
-                        .param("dateNaissance", dateNaissance)
-                        .param("genre", patient1.getGenre())
-                        .param("numeroTelephone", patient1.getNumeroTelephone())
-                        .param("adresse", patient1.getAdresse()))
+        mockMvc.perform(put("/patients/update/1")
+                        .param("firstName", patient1.getFirstName())
+                        .param("surname", "nom2")
+                        .param("dateOfBirthday", patient1.getDateOfBirthday().toString())
+                        .param("gender", patient1.getGender())
+                        .param("phoneNumber", patient1.getPhoneNumber())
+                        .param("address", patient1.getAddress()))
                 .andExpect(model().hasNoErrors())
-                .andExpect(redirectedUrl("/patient/list"));
+                .andExpect(redirectedUrl("/patients/list"));
 
         Patient patientUpdate = patientService.findById(1L);
-        assertEquals(patientUpdate.getNom(), "nom2");
+        assertEquals(patientUpdate.getSurname(), "nom2");
 
         patientService.delete(1L);
     }
@@ -104,7 +99,7 @@ public class PatientIT {
     void deletePatient() throws Exception {
         patientService.create(patient1);
 
-        mockMvc.perform(get("/patient/delete/1"))
-                .andExpect(redirectedUrl("/patient/list"));
+        mockMvc.perform(delete("/patients/delete/1"))
+                .andExpect(redirectedUrl("/patients/list"));
     }
 }

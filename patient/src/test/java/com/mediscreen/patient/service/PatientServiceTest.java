@@ -11,11 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +36,8 @@ public class PatientServiceTest {
 
     @BeforeEach
     private void init() throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date date_naissance = df.parse("1950-08-10");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date_naissance = LocalDate.parse("1950-08-10", dtf);
         patient = Optional.of(new Patient(20L, "Arthur", "Bongo", date_naissance, "M", "0240125245", "10 avenue du jardin"));
     }
 
@@ -51,11 +50,11 @@ public class PatientServiceTest {
     void updateTest() {
         when(patientRepository.findById(anyLong())).thenReturn(patient);
         Patient updatePatient = patient.get();
-        updatePatient.setPrenom("Bob");
+        updatePatient.setFirstName("Bob");
         when(patientRepository.save(updatePatient)).thenReturn(updatePatient);
 
         patientService.updatePatient(1L, patient.get());
-        assertEquals(updatePatient.getPrenom(), "Bob");
+        assertEquals(updatePatient.getFirstName(), "Bob");
         assertTrue(patientService.updatePatient(1L, patient.get()));
     }
 
@@ -63,7 +62,7 @@ public class PatientServiceTest {
     void updateFailTest() {
         when(patientRepository.findById(anyLong())).thenReturn(Optional.empty());
         Patient updatePatient = patient.get();
-        updatePatient.setPrenom("Bob");
+        updatePatient.setFirstName("Bob");
 
         patientService.updatePatient(1L, patient.get());
         assertFalse(patientService.updatePatient(1L, patient.get()));
@@ -98,6 +97,6 @@ public class PatientServiceTest {
     void finByIdTest() {
         when(patientRepository.findById(anyLong())).thenReturn(patient);
         Patient patient1 = patientService.findById(1L);
-        assertEquals(patient1.getPrenom(), "Arthur");
+        assertEquals(patient1.getFirstName(), "Arthur");
     }
 }

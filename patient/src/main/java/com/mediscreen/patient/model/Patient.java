@@ -6,10 +6,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Entity
@@ -29,29 +28,28 @@ public class Patient {
 
     @NotEmpty
     @Column(name = "prenom", nullable = false, length = 45)
-    private String prenom;
+    private String firstName;
     @NotEmpty
     @Column(name = "nom", nullable = false, length = 45)
-    private String nom;
+    private String surname;
     @NotNull
-    @Temporal(TemporalType.DATE)
     @Column(name = "date_naissance")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateNaissance;
+    private LocalDate dateOfBirthday;
     @NotEmpty
     @Column(name = "genre", nullable = false, length = 1)
-    private String genre;
+    private String gender;
     @Column(name = "numero_telephone", length = 20)
-    private String numeroTelephone;
+    private String phoneNumber;
     @Column(name = "adresse", length = 250)
-    private String adresse;
+    private String address;
 
-    public Patient(String prenom, String nom, Date dateNaissance, String genre, String numeroTelephone, String adresse) {
-        this.prenom = prenom;
-        this.nom = nom;
-        this.dateNaissance = dateNaissance;
-        this.genre = genre;
-        this.numeroTelephone = numeroTelephone;
-        this.adresse = adresse;
+    public Patient(String firstName, String surname, LocalDate dateOfBirthday, String gender, String numeroTelephone, String address) {
+        this.firstName = firstName;
+        this.surname = surname;
+        this.dateOfBirthday = dateOfBirthday;
+        this.gender = gender;
+        this.phoneNumber = numeroTelephone;
+        this.address = address;
     }
 }
