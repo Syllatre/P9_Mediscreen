@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row"><h2>Patient History</h2></div>
+    <div class="row">
+        <a href="/patHistory/add" class="btn btn-primary btn-sm">Add new History</a>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>History</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ph:${patientHistory}">
+                <td th:text="${ph.patId}"></td>
+                <td th:text="${ph.note}"></td>
+                <td th:text="${ph.date}"></td>
+                <td>
+                    <a th:href="@{/patHistory/update/{id}(id=${ph.patId})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/patHistory/delete/{id}(id=${ph.patId})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

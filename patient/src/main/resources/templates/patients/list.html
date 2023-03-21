@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row"><h2>Patient List</h2></div>
     <div class="row">
-        <a href="/patients/add" class="btn btn-primary btn-sm">Ajouter un nouveau Patient</a>
+        <a href="/patients/add" class="btn btn-primary btn-sm">Add new Patient</a>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -21,6 +21,8 @@
                 <th>Gender</th>
                 <th>Phone Number</th>
                 <th>Address</th>
+                <th>History</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -31,7 +33,10 @@
                 <td th:text="${p.dateOfBirthday}"></td>
                 <td th:text="${p.gender}"></td>
                 <td th:text="${p.phoneNumber}"></td>
-                <td th:text="${p.address}"></td>
+                <td th:text="${p.address}">
+                <td>
+                    <a href="#" class="btn btn-primary btn-sm">Display</a>
+                </td>
                 <td>
                     <a th:href="@{/patients/update/{id}(id=${p.idPatient})}">Edit</a>&nbsp;|&nbsp;
                     <a th:href="@{/patients/delete/{id}(id=${p.idPatient})}">Delete</a>
