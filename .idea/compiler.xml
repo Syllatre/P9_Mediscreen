@@ -9,15 +9,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="patient" />
         <module name="patientHistory" />
+        <module name="WebApp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="patient" target="11" />
       <module name="patientHistory" target="11" />
+      <module name="WebApp" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="WebApp" options="-parameters" />
       <module name="patient" options="-parameters" />
       <module name="patientHistory" options="-parameters" />
     </option>

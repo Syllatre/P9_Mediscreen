@@ -22,11 +22,15 @@ public class PatientService {
     }
 
     public void delete(Long idPatient) {
+        Patient patientFind = findById(idPatient);
+        if (patientFind == null) {
+            throw new NotFoundException("Patient not found");
+        }
         patientRepository.deleteById(idPatient);
     }
 
     public Patient findById(Long id) {
-        return patientRepository.findById(id).orElseThrow(()->{
+        return patientRepository.findById(id).orElseThrow(() -> {
             log.error("Patient non trouvé");
             return new NotFoundException("patientId " + id + " non trouvé");
         });
@@ -36,20 +40,21 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Boolean updatePatient(Long id, Patient patient) {
+    public Patient updatePatient(Patient patient) {
 
-        Optional<Patient> patientPresent = patientRepository.findById(id);
-        if (patientPresent.isPresent()) {
-            Patient updatePatient = patientPresent.get();
-            updatePatient.setFirstName(patient.getFirstName());
-            updatePatient.setSurname(patient.getSurname());
-            updatePatient.setDateOfBirthday(patient.getDateOfBirthday());
+        Optional<Patient> patientPresent = patientRepository.findById(patient.getIdPatient());
+        Patient updatePatient = patientPresent.get();
+        updatePatient.setFirstName(patient.getFirstName());
+        updatePatient.setSurname(patient.getSurname());
+        updatePatient.setDateOfBirthday(patient.getDateOfBirthday());
+        updatePatient.setGender(patient.getGender());
+        updatePatient.setAddress(patient.getAddress());
+        updatePatient.setPhoneNumber(patient.getPhoneNumber());
+        patientRepository.save(updatePatient);
+        System.out.println(updatePatient);
+        log.debug("Patient " + patient.getIdPatient() + " was updated");
+        return updatePatient;
 
-            patientRepository.save(updatePatient);
-            log.debug("Patient " + id + " was updated");
-            return true;
-        }
-        log.debug("the update was failed because the id: " + id + " doesn't exist");
-        return false;
+
     }
 }

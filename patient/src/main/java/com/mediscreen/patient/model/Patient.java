@@ -1,6 +1,7 @@
 package com.mediscreen.patient.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +25,7 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpatient", nullable = false)
+    @JsonIgnore
     private Long idPatient;
 
     @NotEmpty
@@ -44,12 +46,12 @@ public class Patient {
     @Column(name = "adresse", length = 250)
     private String address;
 
-    public Patient(String firstName, String surname, LocalDate dateOfBirthday, String gender, String numeroTelephone, String address) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirthday, String gender, String phoneNumber, String address) {
         this.firstName = firstName;
         this.surname = surname;
         this.dateOfBirthday = dateOfBirthday;
         this.gender = gender;
-        this.phoneNumber = numeroTelephone;
+        this.phoneNumber = phoneNumber;
         this.address = address;
     }
 }

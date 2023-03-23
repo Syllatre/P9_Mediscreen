@@ -3,6 +3,11 @@ package com.mediscreen.patientHistory.model;
 
 
 import javax.validation.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,6 +20,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PatientHistory {
 
     @Id

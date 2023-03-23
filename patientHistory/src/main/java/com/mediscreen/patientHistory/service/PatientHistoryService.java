@@ -27,8 +27,8 @@ public class PatientHistoryService {
         return patientHistoryRepository.save(patientHistory);
     }
 
-    public void delete(Integer idPatient) {
-        patientHistoryRepository.deleteById(idPatient.toString());
+    public void delete(String id) {
+        patientHistoryRepository.deleteById(id);
     }
 
 
@@ -42,7 +42,7 @@ public class PatientHistoryService {
     public PatientHistory getNoteById (String id){
         Optional <PatientHistory> note = patientHistoryRepository.findById(id);
         if (note.isEmpty()){
-            new NotFoundException("this note doesn't exist");
+            throw  new NotFoundException("this note doesn't exist");
         }
         return note.get();
     }
@@ -55,4 +55,5 @@ public class PatientHistoryService {
         patientHistoryRepository.save(updatePatientHistory);
         return updatePatientHistory;
     }
+
 }

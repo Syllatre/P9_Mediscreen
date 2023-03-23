@@ -10,15 +10,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @Slf4j
 @Tag(name = "Patient Management System", description = "API for managing patient")
@@ -29,66 +27,47 @@ public class PatientController {
     @Operation(summary = "Shows all patients", tags = {"Patient Management System"})
     @ApiResponse(responseCode = "200", description = "Succes | OK")
     @GetMapping("/patients/list")
-    public String home(Model model) {
+    public List<Patient> getAllPatient() {
         List<Patient> patient = patientService.findAll();
-        model.addAttribute("patient", patient);
         log.info("Display patient List");
-        return "patients/list";
+        return patient;
     }
 
-    @GetMapping("/patients/add")
-    public String addPatientForm(Model model) {
-        Patient patient = new Patient();
-        model.addAttribute("patient", patient);
-        log.info("return new form");
-        return "patients/add";
+    @Operation(summary = "Shows all patients", tags = {"Patient Management System"})
+    @ApiResponse(responseCode = "200", description = "Succes | OK")
+    @ApiResponse(responseCode = "404", description = "Patient not found")
+    @GetMapping("/patients/{idPatient}")
+    public Patient getPatientById(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id) {
+        Patient patient = patientService.findById(id);
+        log.info("Display patient by Id");
+        return patient;
     }
 
-    @PostMapping("/patients/validate")
+
+    @PostMapping("/patients/add")
     @Operation(summary = "Add patient", description = "Validates the information from the add new patient form and adds it to the database.", tags = {"Patient Management System"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "302", description = "Patient added successfully"),
+            @ApiResponse(responseCode = "201", description = "Patient added successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid information in the form")
     })
-    public String validate(@Parameter(description = "Personal patient information to be recorded", required = true) @Valid Patient patient, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            log.info("informations is not valid");
-            return "patients/add";
-        }
-        patientService.create(patient);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Patient addPatient(@Parameter(description = "Personal patient information to be recorded", required = true) @Valid @RequestBody Patient patient) {
+
+        Patient addPatient = patientService.create(patient);
         log.info("Patient " + patient.getFirstName() + " " + patient.getSurname() + " was add");
-        model.addAttribute("patient", patientService.findAll());
-        return "redirect:/patients/list";
+        return addPatient;
     }
 
-    @GetMapping("/patients/update/{idPatient}")
-    public String showUpdateForm(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long idPatient, Model model) {
-        Patient patient = patientService.findById(idPatient);
-        model.addAttribute("patient", patient);
-        log.info("return form with " + patient + " to update it");
-        return "patients/update";
-    }
 
-    @PutMapping("/patients/update/{idPatient}")
+    @PutMapping("/patients/update")
     @Operation(summary = "Update Patient", description = "Validates the information of the modification form of a patient and updates the data of the corresponding patient.", tags = {"Patient Management System"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "302", description = "Successfully modified patient"),
-            @ApiResponse(responseCode = "400", description = "Invalid information in the form"),
+            @ApiResponse(responseCode = "200", description = "Successfully modified patient"),
             @ApiResponse(responseCode = "404", description = "Patient not found")
     })
-    public String updatePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long idPatient,
-                                @Parameter(description = "Personal patient information to modify", required = true) @Valid Patient patient,
-                                BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            log.info("informations is not valid");
-            return "patients/update";
-        }
-        Boolean updated = patientService.updatePatient(idPatient, patient);
-        if (!updated) {
-            model.addAttribute("patient", patientService.findAll());
-            log.info("Patient " + patient + " was updated");
-        }
-        return "redirect:/patients/list";
+    public Patient updatePatient(@Parameter(description = "Personal patient information to modify", required = true) @Valid @RequestBody Patient patient) {
+        Patient updatedPatient = patientService.updatePatient(patient);
+        return updatedPatient;
     }
 
     @Operation(summary = "Delete Patient", description = "Deletes the patient corresponding to the given identifier.", tags = {"Patient Management System"})
@@ -98,9 +77,8 @@ public class PatientController {
     })
     @DeleteMapping("/patients/delete/{idPatient}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deletePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id, Model model) {
+    public void deletePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id) {
         patientService.delete(id);
         log.info("Patient " + id + " was deleted");
-        return "redirect:/patients/list";
     }
 }
