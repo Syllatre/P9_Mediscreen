@@ -19,14 +19,14 @@ public interface MicroservicePatientProxy {
     PatientBean addPatient(@RequestBody PatientBean patient);
 
 
-    @PutMapping(value = "/patients/update/{idPatient}")
-    PatientBean updatePatient(@PathVariable("idPatient") Long id, @RequestBody PatientBean patient);
+    @PutMapping(value = "/patients/update")
+    PatientBean updatePatient(@RequestBody PatientBean patient);
 
 
     @DeleteMapping(value = "/patients/delete/{idPatient}")
-    void deletePatient(@PathVariable("idPatient") Long id);
+    void deletePatient(@PathVariable("idPatient") Integer id);
 
     @GetMapping("/patients/{idPatient}")
-    PatientBean getPatientById(@PathVariable("idPatient") Long id);
+    PatientBean getPatientById(@PathVariable("idPatient") Integer id);
 
 }

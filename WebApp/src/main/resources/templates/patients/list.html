@@ -14,6 +14,7 @@
         <table class="table table-bordered">
             <thead>
             <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Date of birthday</th>
@@ -25,7 +26,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="p:${patient}">
+            <tr th:each="p:${patients}">
+                <td th:text="${p.idPatient}"></td>
                 <td th:text="${p.firstName}"></td>
                 <td th:text="${p.surname}"></td>
                 <td th:text="${p.dateOfBirthday}"></td>
@@ -33,7 +35,7 @@
                 <td th:text="${p.phoneNumber}"></td>
                 <td th:text="${p.address}">
                 <td>
-                    <a th:href="@{/patHistory/list/{p.idPatient}}" class="btn btn-primary btn-sm">Display</a>
+                    <a th:href="@{/patHistory/list/{patId}(patId=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>
                 </td>
                 <td>
                     <a th:href="@{/patients/update/{id}(id=${p.idPatient})}">Edit</a>&nbsp;|&nbsp;

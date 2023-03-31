@@ -1,6 +1,8 @@
 package com.mediscreen.WebApp.controller;
 
+import com.mediscreen.WebApp.mapper.PatientHistoryDTOMapper;
 import com.mediscreen.WebApp.mapper.PatientHistoryListDTOMapper;
+import com.mediscreen.WebApp.model.DTO.PatientHistoryDTO;
 import com.mediscreen.WebApp.model.PatientHistoryBean;
 import com.mediscreen.WebApp.proxy.MicroservicePatientHistoryProxy;
 import com.mediscreen.WebApp.proxy.MicroservicePatientProxy;
@@ -10,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -26,32 +26,41 @@ public class PatientHistoryController {
 
     MicroservicePatientProxy patientProxy;
 
-    @GetMapping(value = "/patHistory/list/{patId}")
-    public String getAllNotesByPatientId(@PathVariable("patId") Integer patId, Model model) {
+    @GetMapping(value = "/patHistory/list/{idPatient}")
+    public String getAllNotesByPatientId(@PathVariable("idPatient") Integer idPatient, Model model) {
 
-        model.addAttribute("patHistory", PatientHistoryListDTOMapper.INSTANCE.from(patientProxy.getPatientById(patId.longValue()), patientHistoryProxy.getAllNotesByPatientId(patId)));
+        model.addAttribute("patHistory", PatientHistoryListDTOMapper.INSTANCE.from(patientProxy.getPatientById(idPatient), patientHistoryProxy.getAllNotesByPatientId(idPatient)));
         log.info("Display all patient history");
         return "/patHistory/list";
     }
 
 
-    @GetMapping("/patHistory/add")
-    public String addNoteForm(Model model) {
-        PatientHistoryBean patHistory = new PatientHistoryBean();
-        model.addAttribute("patHistory", patHistory);
+    @GetMapping("/patHistory/add/{idPatient}")
+    public String addNoteForm(@PathVariable("idPatient") Integer idPatient,  Model model) {
+        model.addAttribute("patientHistory", PatientHistoryDTOMapper.INSTANCE.from(patientProxy.getPatientById(idPatient),new PatientHistoryBean()));
         log.info("return new form");
         return "patHistory/add";
     }
 
-    @PostMapping("/patHistory/validate")
-    public String validate(@Parameter(description = "Note history information to be recorded", required = true) @Valid @RequestParam("patId") Integer patId, @RequestParam String note, BindingResult result, Model model) {
+    @PostMapping("/patHistory/add/{idPatient}")
+    public String validate(@PathVariable("idPatient") Integer idPatient, @ModelAttribute("patientHistory") @Valid PatientHistoryDTO patientHistoryDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
             log.info("informations is not valid");
             return "patHistory/add";
         }
-        patientHistoryProxy.create(patId, note);
+        patientHistoryProxy.create(idPatient, patientHistoryDTO.getNoteText());
         log.info("Note was add");
-        model.addAttribute("patHistory", patientHistoryProxy.getAllNotesByPatientId(patId));
-        return "redirect:/patHistory/list" + patId;
+        model.addAttribute("patHistory", patientHistoryProxy.getAllNotesByPatientId(idPatient));
+        return "redirect:/patHistory/list/" + idPatient;
     }
+
+//
+//    @GetMapping("/patHistory/noteById/{id}")
+//    public String getNoteById(@PathVariable("id") String id, Model model) {
+//        PatientHistoryBean patientHistory = patientHistoryProxy.geNotesById(id);
+//        model.addAttribute("patientHistory", patientHistory);
+//        return "/patHistory/noteById";
+//    }
+//
+
 }

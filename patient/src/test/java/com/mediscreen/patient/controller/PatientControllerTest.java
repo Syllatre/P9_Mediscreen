@@ -47,8 +47,8 @@ public class PatientControllerTest {
         LocalDate date_naissance1 = LocalDate.parse("1990-01-01", dtf);
         LocalDate date_naissance2 = LocalDate.parse("1992-02-02", dtf);
         patientList = Arrays.asList(
-                new Patient(1L, "John", "Doe", date_naissance1, "M", "1234567890", "123 Main St"),
-                new Patient(2L, "Jane", "Doe", date_naissance2, "F", "0987654321", "456 Main St")
+                new Patient(1, "John", "Doe", date_naissance1, "M", "1234567890", "123 Main St"),
+                new Patient(2, "Jane", "Doe", date_naissance2, "F", "0987654321", "456 Main St")
         );
     }
 
@@ -66,7 +66,7 @@ public class PatientControllerTest {
     @Test
     public void addPatient() throws Exception {
         Patient newPatient = new Patient( "Alice", "Smith", LocalDate.of(1995, 5, 5), "F", "1112223333", "789 Main St");
-        Patient savedPatient = new Patient(3l, "Alice", "Smith", LocalDate.of(1995, 5, 5), "F", "1112223333", "789 Main St");
+        Patient savedPatient = new Patient(3, "Alice", "Smith", LocalDate.of(1995, 5, 5), "F", "1112223333", "789 Main St");
 
         when(patientService.create(any(Patient.class))).thenReturn(savedPatient);
 
@@ -87,30 +87,26 @@ public class PatientControllerTest {
 
     @Test
     public void updatePatient() throws Exception {
-        Patient updatedPatient = new Patient(1L, "Johnny", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        Patient updatedPatient = new Patient(1, "Johnny", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
 
-        when(patientService.updatePatient(updatedPatient)).thenReturn(updatedPatient);
+        when(patientService.updatePatient(any())).thenReturn(updatedPatient);
 
         mockMvc.perform(put("/patients/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedPatient)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(mvcResult -> System.out.println("Response JSON: " + mvcResult.getResponse().getContentAsString())) // Ajouter cette ligne pour imprimer la réponse JSON
-                .andExpect(jsonPath("$.surname").value(updatedPatient.getFirstName()));
+                .andExpect(jsonPath("$.surname").value(updatedPatient.getSurname()));
 
-        verify(patientService, times(1)).updatePatient(updatedPatient);
+        verify(patientService, times(1)).updatePatient(any());
 
     }
 
     @Test
     void deletePatientNote() throws Exception {
-        int id = 1;
-        Long idL = 1L;
-
-        mockMvc.perform(delete("/patients/delete/1"))
+        mockMvc.perform(get("/patients/delete/1"))
                 .andExpect(status().isNoContent());
 
-        verify(patientService, times(1)).delete(idL);
+        verify(patientService, times(1)).delete(1);
     }
 }

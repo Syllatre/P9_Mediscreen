@@ -16,7 +16,7 @@ public class PatientHistoryBean {
     @Id
     private String id;
 
-    private Integer patId;
+    private Integer idPatient;
 
     @NotBlank
     private String note;

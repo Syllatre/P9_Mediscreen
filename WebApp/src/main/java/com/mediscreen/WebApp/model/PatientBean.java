@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -15,20 +16,17 @@ import java.time.LocalDate;
 @ToString
 public class PatientBean {
 
-        private Long idPatient;
+        private Integer idPatient;
 
-        @NotEmpty
+        @NotEmpty(message = "you must enter your first name")
         private String firstName;
-        @NotEmpty
-
+        @NotEmpty(message = "you must enter your name")
         private String surname;
         @NotNull
-
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         @Past(message = "You can't choose date after today")
         private LocalDate dateOfBirthday;
-        @NotEmpty
-
+        @Pattern(regexp = "[MF]",message = "Select M or F")
         private String gender;
 
         private String phoneNumber;

@@ -24,8 +24,8 @@ public class PatientController {
 
     @GetMapping("/patients/list")
     public String getAllPatient(Model model) {
-        List<PatientBean> patient = patientService.getAllPatient();
-        model.addAttribute("patient",patient);
+        List<PatientBean> patients = patientService.getAllPatient();
+        model.addAttribute("patients",patients);
         log.info("Display patient List");
         return "patients/list";
     }
@@ -39,45 +39,48 @@ public class PatientController {
     }
 
     @PostMapping("/patients/validate")
-    public String validate(@Parameter(description = "Personal patient information to be recorded", required = true) @Valid PatientBean patient, BindingResult result, Model model) {
+    public String validate(@Valid @ModelAttribute("patient") PatientBean patient, BindingResult result, Model model) {
         if (result.hasErrors()) {
             log.info("informations is not valid");
             return "patients/add";
         }
         patientService.addPatient(patient);
+        model.addAttribute("patients", patientService.getAllPatient());
+
         log.info("Patient " + patient.getFirstName() + " " + patient.getSurname() + " was add");
-        model.addAttribute("patient", patientService.getAllPatient());
+
         return "redirect:/patients/list";
     }
 
     @GetMapping("/patients/update/{idPatient}")
-    public String showUpdateForm(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long idPatient, Model model) {
+    public String showUpdateForm(@PathVariable("idPatient") Integer idPatient, Model model) {
         PatientBean patient = patientService.getPatientById(idPatient);
         model.addAttribute("patient", patient);
         log.info("return form with " + patient + " to update it");
         return "patients/update";
     }
 
-    @PutMapping("/patients/update/{idPatient}")
-    public String updatePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long idPatient,
-                                @Parameter(description = "Personal patient information to modify", required = true) @Valid PatientBean patient,
-                                BindingResult result, Model model) {
+    @PostMapping("/patients/update/{idPatient}")
+    public String updatePatient(@PathVariable("idPatient") Integer idPatient, @Valid @ModelAttribute("patient") PatientBean patient, BindingResult result, Model model) {
+
         if (result.hasErrors()) {
             log.info("informations is not valid");
             return "patients/update";
         }
-        PatientBean updated = patientService.updatePatient(idPatient, patient);
-        if (updated != null) {
-            model.addAttribute("patient", patientService.getAllPatient());
-            log.info("Patient " + patient + " was updated");
+        PatientBean updated = patientService.updatePatient(patient);
+        if (updated.getIdPatient() == null) {
+            System.out.println("id not found");
         }
+
+        model.addAttribute("patients", patientService.getAllPatient());
+        log.info("Patient " + patient + " was updated");
         return "redirect:/patients/list";
     }
 
-    @DeleteMapping("/patients/delete/{idPatient}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deletePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id, Model model) {
+    @GetMapping("/patients/delete/{idPatient}")
+    public String deletePatient(@PathVariable("idPatient") Integer id,Model model) {
         patientService.deletePatient(id);
+        model.addAttribute("patients", patientService.getAllPatient());
         log.info("Patient " + id + " was deleted");
         return "redirect:/patients/list";
     }

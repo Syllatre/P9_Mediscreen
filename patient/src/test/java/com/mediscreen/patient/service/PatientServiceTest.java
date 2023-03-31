@@ -39,8 +39,8 @@ public class PatientServiceTest {
 
     @BeforeEach
     void setUp() {
-        patient1 = new Patient(1L, "John", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
-        patient2 = new Patient(2L, "Jane", "Doe", LocalDate.of(1992, 1, 1), "F", "2345678901", "456 Main St");
+        patient1 = new Patient(1, "John", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        patient2 = new Patient(2, "Jane", "Doe", LocalDate.of(1992, 1, 1), "F", "2345678901", "456 Main St");
     }
 
     @Test
@@ -53,29 +53,29 @@ public class PatientServiceTest {
 
     @Test
     void delete() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient1));
-        patientService.delete(1L);
-        verify(patientRepository, times(1)).deleteById(1L);
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient1));
+        patientService.delete(1);
+        verify(patientRepository, times(1)).deleteById(1);
     }
 
     @Test
     void delete_NotFound() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> patientService.delete(1L));
+        when(patientRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> patientService.delete(1));
     }
 
     @Test
     void findById() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient1));
-        Patient foundPatient = patientService.findById(1L);
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient1));
+        Patient foundPatient = patientService.findById(1);
         assertNotNull(foundPatient);
         assertEquals(patient1, foundPatient);
     }
 
     @Test
     void findById_NotFound() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> patientService.findById(1L));
+        when(patientRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> patientService.findById(1));
     }
 
     @Test
@@ -88,9 +88,9 @@ public class PatientServiceTest {
 
     @Test
     void updatePatient() {
-        when(patientRepository.findById(1L)).thenReturn(Optional.of(patient1));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(patient1));
 
-        Patient updatedPatient = new Patient(1L, "John", "Smith", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        Patient updatedPatient = new Patient(1, "John", "Smith", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
         when(patientRepository.save(any(Patient.class))).thenReturn(updatedPatient);
 
         Patient result = patientService.updatePatient(updatedPatient);

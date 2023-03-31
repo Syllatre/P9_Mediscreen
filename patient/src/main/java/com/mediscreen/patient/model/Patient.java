@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 
@@ -25,8 +27,7 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpatient", nullable = false)
-    @JsonIgnore
-    private Long idPatient;
+    private Integer idPatient;
 
     @NotEmpty
     @Column(name = "prenom", nullable = false, length = 45)
@@ -35,10 +36,11 @@ public class Patient {
     @Column(name = "nom", nullable = false, length = 45)
     private String surname;
     @NotNull
-    @Column(name = "date_naissance")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "You can't choose date after today")
+    @Column(name = "date_naissance")
     private LocalDate dateOfBirthday;
-    @NotEmpty
+    @Pattern(regexp = "[MF]",message = "Select M or F")
     @Column(name = "genre", nullable = false, length = 1)
     private String gender;
     @Column(name = "numero_telephone", length = 20)

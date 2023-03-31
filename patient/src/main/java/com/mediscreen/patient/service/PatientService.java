@@ -21,7 +21,7 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public void delete(Long idPatient) {
+    public void delete( Integer idPatient) {
         Patient patientFind = findById(idPatient);
         if (patientFind == null) {
             throw new NotFoundException("Patient not found");
@@ -29,7 +29,7 @@ public class PatientService {
         patientRepository.deleteById(idPatient);
     }
 
-    public Patient findById(Long id) {
+    public Patient findById(Integer id) {
         return patientRepository.findById(id).orElseThrow(() -> {
             log.error("Patient non trouvé");
             return new NotFoundException("patientId " + id + " non trouvé");
@@ -50,11 +50,10 @@ public class PatientService {
         updatePatient.setGender(patient.getGender());
         updatePatient.setAddress(patient.getAddress());
         updatePatient.setPhoneNumber(patient.getPhoneNumber());
-        patientRepository.save(updatePatient);
+
         System.out.println(updatePatient);
         log.debug("Patient " + patient.getIdPatient() + " was updated");
-        return updatePatient;
 
-
+        return patientRepository.save(updatePatient);
     }
 }

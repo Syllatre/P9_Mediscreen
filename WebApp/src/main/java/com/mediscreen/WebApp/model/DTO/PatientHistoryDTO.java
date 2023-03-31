@@ -21,7 +21,7 @@ public class PatientHistoryDTO {
     private LocalDate dateOfBirthday;
     private String gender;
     private String phoneNumber;
-    private String adresse;
+    private String address;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate noteDate;
     @Valid

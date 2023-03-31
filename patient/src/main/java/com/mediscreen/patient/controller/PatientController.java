@@ -37,7 +37,7 @@ public class PatientController {
     @ApiResponse(responseCode = "200", description = "Succes | OK")
     @ApiResponse(responseCode = "404", description = "Patient not found")
     @GetMapping("/patients/{idPatient}")
-    public Patient getPatientById(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id) {
+    public Patient getPatientById(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Integer id) {
         Patient patient = patientService.findById(id);
         log.info("Display patient by Id");
         return patient;
@@ -77,7 +77,7 @@ public class PatientController {
     })
     @DeleteMapping("/patients/delete/{idPatient}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Long id) {
+    public void deletePatient(@Parameter(description = "Patient ID", required = true) @PathVariable("idPatient") Integer id) {
         patientService.delete(id);
         log.info("Patient " + id + " was deleted");
     }

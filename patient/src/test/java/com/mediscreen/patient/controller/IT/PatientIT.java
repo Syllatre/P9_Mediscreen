@@ -45,8 +45,8 @@ public class PatientIT {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date_naissance1 = LocalDate.parse("1950-08-10", dtf);
         LocalDate date_naissance2 =  LocalDate.parse("1990-09-09",dtf);
-        patient1 = new Patient(1L, "prenom1", "nom1", date_naissance1, "M", "tel10000000", "adresse1");
-        patient2 = new Patient(2L, "prenom2", "nom2", date_naissance2, "M", "tel20000000", "adresse2");
+        patient1 = new Patient(1, "prenom1", "nom1", date_naissance1, "M", "tel10000000", "adresse1");
+        patient2 = new Patient(2, "prenom2", "nom2", date_naissance2, "M", "tel20000000", "adresse2");
     }
 
 
@@ -71,9 +71,9 @@ public class PatientIT {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/patients/list"));
 
-        Patient patientSaved = patientService.findById(1L);
+        Patient patientSaved = patientService.findById(1);
         assertEquals(patientSaved.getFirstName(), "prenom1");
-        patientService.delete(1L);
+        patientService.delete(1);
     }
 
     @Test
@@ -89,17 +89,17 @@ public class PatientIT {
                 .andExpect(model().hasNoErrors())
                 .andExpect(redirectedUrl("/patients/list"));
 
-        Patient patientUpdate = patientService.findById(1L);
+        Patient patientUpdate = patientService.findById(1);
         assertEquals(patientUpdate.getSurname(), "nom2");
 
-        patientService.delete(1L);
+        patientService.delete(1);
     }
 
     @Test
     void deletePatient() throws Exception {
         patientService.create(patient1);
 
-        mockMvc.perform(delete("/patients/delete/1"))
+        mockMvc.perform(get("/patients/delete/1"))
                 .andExpect(redirectedUrl("/patients/list"));
     }
 }
