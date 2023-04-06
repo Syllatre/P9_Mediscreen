@@ -8,10 +8,10 @@ services:
     container_name: webapp
     environment:
       PATIENT_FEIGN_URL: patient:8081
-      HISTORY_FEIGN_URL: patient_history:8082
+      HISTORY_FEIGN_URL: patient-history:8082
     depends_on:
       - patient
-      - patient_history
+      - patient-history
     ports:
       - 8080:8080
     volumes:
@@ -37,7 +37,7 @@ services:
     networks:
       - mediscreen
 
-  patient_history:
+  patient-history:
     depends_on:
       - notes-db
     build:
@@ -49,7 +49,7 @@ services:
     ports:
       - 8082:8082
     volumes:
-      - /logp:/patient_history/logs
+      - /logp:/patient-history/logs
     networks:
       - mediscreen
 
