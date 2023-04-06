@@ -3,30 +3,33 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>Home</title>
+    <title>Edit Note</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <h2>Update Note</h2>
-    </div>
 
     <div class="row">
-        <form action="#" th:action="@{/patHistory/update/{id}(id=${patientHistory.patId})}" th:object="${patientHistory}" method="Put" class="form-horizontal" style="width: 100%">
-            <label for="note"> </label>
-            <input class="form-control my-3 bg-light" id="note" placeholder="note" type="text" autofocus name="note"
-                   th:field="*{note}">
-            <span class="has-error" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></span>
+        <h2>Edit Note</h2>
+    </div>
+    <div class="row">
+        <h4 th:text="'Patient: ' + ${patientHistory.firstName} + ' ' + ${patientHistory.surname}"></h4>
+    </div>
+    <div class="row">
+        <form action="#" th:action="@{/patHistory/update/{idPatient}/{id}(idPatient=${patientHistory.idPatient}, id=${patientHistory.id})}" th:object="${patientHistory}" method="post" class="form-horizontal" style="width:100">
+
+        <label for="noteText"> </label>
+            <input class="form-control my-3 bg-light" id="noteText" placeholder="note" type="text" autofocus note="noteText"
+                   th:field="*{noteText}">
+            <span class="has-error" th:if="${#fields.hasErrors('noteText')}" th:errors="*{noteText}"></span>
             <div class="row">
                 <div class="col sm-12">
-                    <a class="btn btn-danger btn-sm" href="/patHistory/list">Cancel</a>
-                    <button class="btn btn-primary btn-sm" type="submit">Update</button>
+                    <a th:href="@{/patHistory/list/{idPatient}(idPatient=${patientHistory.idPatient})}" class="btn btn-danger btn-sm">Cancel</a>
+                    <button class="btn btn-primary btn-sm" type="submit">Save Changes</button>
                 </div>
             </div>
         </form>
     </div>
-
 </div>
 </body>
 </html>

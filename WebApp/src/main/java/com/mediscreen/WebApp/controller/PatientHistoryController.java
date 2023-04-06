@@ -3,6 +3,7 @@ package com.mediscreen.WebApp.controller;
 import com.mediscreen.WebApp.mapper.PatientHistoryDTOMapper;
 import com.mediscreen.WebApp.mapper.PatientHistoryListDTOMapper;
 import com.mediscreen.WebApp.model.DTO.PatientHistoryDTO;
+import com.mediscreen.WebApp.model.PatientBean;
 import com.mediscreen.WebApp.model.PatientHistoryBean;
 import com.mediscreen.WebApp.proxy.MicroservicePatientHistoryProxy;
 import com.mediscreen.WebApp.proxy.MicroservicePatientProxy;
@@ -54,13 +55,34 @@ public class PatientHistoryController {
         return "redirect:/patHistory/list/" + idPatient;
     }
 
-//
-//    @GetMapping("/patHistory/noteById/{id}")
-//    public String getNoteById(@PathVariable("id") String id, Model model) {
-//        PatientHistoryBean patientHistory = patientHistoryProxy.geNotesById(id);
-//        model.addAttribute("patientHistory", patientHistory);
-//        return "/patHistory/noteById";
-//    }
-//
+    @GetMapping("/patHistory/delete/{idPatient}/{id}")
+    public String deletePatientHistory(@PathVariable("idPatient") Integer idPatient,@PathVariable("id") String id,Model model) {
+        patientHistoryProxy.deletePatientNote(id);
+        log.info("Patient " + id + " was deleted");
+        return "redirect:/patHistory/list/"+idPatient;
+    }
+
+
+    @GetMapping("/patHistory/update/{idPatient}/{id}")
+    public String getNoteById(@PathVariable("idPatient") Integer idPatient,@PathVariable("id") String id, Model model) {
+        model.addAttribute("patientHistory",PatientHistoryDTOMapper.INSTANCE.from(patientProxy.getPatientById(idPatient),patientHistoryProxy.geNotesById(id)));
+        return "/patHistory/update";
+    }
+
+    @PostMapping("/patHistory/update/{idPatient}/{id}")
+    public String updateNote(@PathVariable("idPatient") Integer idPatient,@PathVariable("id") String id,  @ModelAttribute("patientHistory") @Valid PatientHistoryDTO patientHistory, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            log.info("informations is not valid");
+            return "patHistory/update";
+        }
+        PatientHistoryBean updated = patientHistoryProxy.updatePatientHistory(new PatientHistoryBean(id,idPatient,patientHistory.getNoteText(),null));
+        if (updated.getId() == null) {
+            System.out.println("id not found");
+        }
+
+        model.addAttribute("patientHistories", patientHistoryProxy.getAllNotesByPatientId(idPatient));
+        log.info("Patient note " + patientHistory + " was updated");
+        return "redirect:/patHistory/list/"+patientHistory.getIdPatient();
+    }
 
 }

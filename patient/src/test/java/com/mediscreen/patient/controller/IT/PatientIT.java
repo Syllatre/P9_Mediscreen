@@ -1,14 +1,18 @@
 package com.mediscreen.patient.controller.IT;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mediscreen.patient.model.Patient;
+import com.mediscreen.patient.repository.PatientRepository;
 import com.mediscreen.patient.service.PatientService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,15 +20,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -34,21 +38,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientIT {
     private Patient patient1;
 
-    private Patient patient2;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private PatientService  patientService;
+    private PatientService patientService;
+    @Autowired
+    private PatientRepository patientRepository;
 
     @BeforeEach
     public void setUp() throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date_naissance1 = LocalDate.parse("1950-08-10", dtf);
-        LocalDate date_naissance2 =  LocalDate.parse("1990-09-09",dtf);
         patient1 = new Patient(1, "prenom1", "nom1", date_naissance1, "M", "tel10000000", "adresse1");
-        patient2 = new Patient(2, "prenom2", "nom2", date_naissance2, "M", "tel20000000", "adresse2");
     }
 
+    public static String asJsonString(final Object object) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            return mapper.writeValueAsString(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void displayPatientListIT() throws Exception {
@@ -60,46 +72,55 @@ public class PatientIT {
 
     @Test
     void addValidePatient() throws Exception {
-        mockMvc.perform(post("/patients/validate")
-                        .param("firstName", patient1.getFirstName())
-                        .param("surname", patient1.getSurname())
-                        .param("dateOfBirthday", patient1.getDateOfBirthday().toString())
-                        .param("gender", patient1.getGender())
-                        .param("phoneNumber", patient1.getPhoneNumber())
-                        .param("address", patient1.getAddress()))
-                .andExpect(model().hasNoErrors())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/patients/list"));
-
-        Patient patientSaved = patientService.findById(1);
-        assertEquals(patientSaved.getFirstName(), "prenom1");
-        patientService.delete(1);
+        mockMvc.perform(MockMvcRequestBuilders.post("/patients/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(patient1)))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 
     @Test
-    void updatePatient() throws Exception {
-        patientService.create(patient1);
-        mockMvc.perform(put("/patients/update/1")
-                        .param("firstName", patient1.getFirstName())
-                        .param("surname", "nom2")
-                        .param("dateOfBirthday", patient1.getDateOfBirthday().toString())
-                        .param("gender", patient1.getGender())
-                        .param("phoneNumber", patient1.getPhoneNumber())
-                        .param("address", patient1.getAddress()))
-                .andExpect(model().hasNoErrors())
-                .andExpect(redirectedUrl("/patients/list"));
+    public void updatePatient() throws Exception {
+        Patient initialPatient = new Patient(null, "John", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        initialPatient = patientService.create(initialPatient);
 
-        Patient patientUpdate = patientService.findById(1);
-        assertEquals(patientUpdate.getSurname(), "nom2");
+        Patient updatedPatient = new Patient(initialPatient.getIdPatient(), "Johnny", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
 
-        patientService.delete(1);
+        mockMvc.perform(put("/patients/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(updatedPatient)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.surname").value(updatedPatient.getSurname()));
+
+        Patient updatedPatientInDb = patientService.findById(initialPatient.getIdPatient());
+        assertThat(updatedPatientInDb != null);
+        assertThat(updatedPatientInDb.getSurname()).isEqualTo(updatedPatient.getSurname());
     }
 
     @Test
-    void deletePatient() throws Exception {
-        patientService.create(patient1);
+    public void getPatientById() throws Exception {
+        Patient patient = new Patient(null, "John", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        patient = patientService.create(patient);
 
-        mockMvc.perform(get("/patients/delete/1"))
-                .andExpect(redirectedUrl("/patients/list"));
+
+        mockMvc.perform(get("/patients/{idPatient}", patient.getIdPatient()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.surname").value(patient.getSurname()));
+    }
+
+    @Test
+    public void deletePatient() throws Exception {
+
+        Patient patient = new Patient(null, "John", "Doe", LocalDate.of(1990, 1, 1), "M", "1234567890", "123 Main St");
+        patient = patientService.create(patient);
+
+        mockMvc.perform(delete("/patients/delete/{idPatient}", patient.getIdPatient()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        Optional<Patient> deletedPatient = patientRepository.findById(patient.getIdPatient());
+        assertThat(deletedPatient).isNotPresent();
     }
 }

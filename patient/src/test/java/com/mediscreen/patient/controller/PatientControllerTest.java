@@ -104,7 +104,7 @@ public class PatientControllerTest {
 
     @Test
     void deletePatientNote() throws Exception {
-        mockMvc.perform(get("/patients/delete/1"))
+        mockMvc.perform(delete("/patients/delete/1"))
                 .andExpect(status().isNoContent());
 
         verify(patientService, times(1)).delete(1);

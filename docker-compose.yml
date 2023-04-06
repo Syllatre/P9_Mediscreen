@@ -1,0 +1,90 @@
+version: "3.3"
+
+services:
+  webapp:
+    build:
+      context: WebApp
+      dockerfile: Dockerfile
+    container_name: webapp
+    environment:
+      PATIENT_FEIGN_URL: patient:8081
+      HISTORY_FEIGN_URL: patient_history:8082
+    depends_on:
+      - patient
+      - patient_history
+    ports:
+      - 8080:8080
+    volumes:
+      - /logw:/webapp/logs
+    networks:
+      - mediscreen
+
+  patient:
+    depends_on:
+      - patients-db
+    build:
+      context: patient
+      dockerfile: Dockerfile
+    container_name: patient
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://patients-db:3306/patient?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_PASSWORD=rootroot
+      - SPRING_DATASOURCE_USERNAME=root
+    ports:
+      - 8081:8081
+    volumes:
+      - /logp:/patient/logs
+    networks:
+      - mediscreen
+
+  patient_history:
+    depends_on:
+      - notes-db
+    build:
+      context: patientHistory
+      dockerfile: Dockerfile
+    container_name: patient-history
+    environment:
+      MONGODB_URL: notes-db:27017
+    ports:
+      - 8082:8082
+    volumes:
+      - /logp:/patient_history/logs
+    networks:
+      - mediscreen
+
+  patients-db:
+    image: mysql:8.0
+    container_name: patients-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=patient
+      - MYSQL_PASSWORD=rootroot
+    ports:
+      - 3307:3306
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - mediscreen
+
+  notes-db:
+    image: mongo:5.0
+    container_name: notes-db
+    environment:
+      - MONGO_INITDB_DATABASE=patientHistory
+      - MONGO_INITDB_ROOT_USERNAME=docker_mediscreen_notes
+      - MONGO_INITDB_ROOT_PASSWORD=docker123
+    ports:
+      - 27018:27017
+    command: mongod
+    networks:
+      - mediscreen
+
+volumes:
+  db:
+  mongodb:
+  mongodb_config:
+
+networks:
+  mediscreen:

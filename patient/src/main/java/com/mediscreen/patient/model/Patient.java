@@ -1,7 +1,7 @@
 package com.mediscreen.patient.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,10 +37,12 @@ public class Patient {
     private String surname;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Past(message = "You can't choose date after today")
     @Column(name = "date_naissance")
     private LocalDate dateOfBirthday;
-    @Pattern(regexp = "[MF]",message = "Select M or F")
+    @Pattern(regexp = "[MF]", message = "Select M or F")
     @Column(name = "genre", nullable = false, length = 1)
     private String gender;
     @Column(name = "numero_telephone", length = 20)

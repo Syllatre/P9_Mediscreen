@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @ToString
 public class PatientHistoryBean {
 
-    @Id
+
     private String id;
 
     private Integer idPatient;

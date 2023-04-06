@@ -15,21 +15,23 @@
     <div class="row">
     <div class="row">
         <a th:href="@{/patHistory/add/{idPatient}(idPatient=${patHistory.idPatient})}" class="btn btn-primary btn-sm">Add new History</a>
+        <a href="/patients/list" class="btn btn-secondary btn-sm">Back to Patient List</a>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>History</th>
                 <th>Date</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="ph:${patHistory.noteList}">
                 <td th:text="${ph.note}"></td>
                 <td th:text="${ph.date}"></td>
-<!--                <td>-->
-<!--                    <a th:href="@{/patHistory/update/{idPatient}(idPatient=${ph.idPatient})}">Edit</a>&nbsp;|&nbsp;-->
-<!--                    <a th:href="@{/patHistory/delete/{idPatient}(idPatient=${ph.idPatient})}">Delete</a>-->
-<!--                </td>-->
+                <td>
+                    <a th:href="@{/patHistory/update/{idPatient}/{id}(idPatient=${patHistory.idPatient}, id=${ph.id})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/patHistory/delete/{idPatient}/{id}(idPatient=${patHistory.idPatient}, id=${ph.id})}">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>
