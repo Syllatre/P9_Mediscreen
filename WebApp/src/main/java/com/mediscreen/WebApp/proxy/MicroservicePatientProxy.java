@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "PatientsManagement", url = "${feign.url.patient}")
+@FeignClient(name = "patient", url = "${feign.url.patient}")
 public interface MicroservicePatientProxy {
 
 
