@@ -27,7 +27,7 @@ public class PatientHistoryController {
 
     MicroservicePatientProxy patientProxy;
 
-    @GetMapping(value = "/patHistory/list/{idPatient}")
+    @GetMapping("/patHistory/list/{idPatient}")
     public String getAllNotesByPatientId(@PathVariable("idPatient") Integer idPatient, Model model) {
 
         model.addAttribute("patHistory", PatientHistoryListDTOMapper.INSTANCE.from(patientProxy.getPatientById(idPatient), patientHistoryProxy.getAllNotesByPatientId(idPatient)));

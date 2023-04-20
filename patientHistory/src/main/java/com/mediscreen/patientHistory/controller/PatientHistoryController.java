@@ -23,13 +23,22 @@ public class PatientHistoryController {
     PatientHistoryService patientHistoryService;
 
 
-
+    @Operation(summary = "Shows all notes by Id patient", tags = {"Patient History Management System"})
+    @ApiResponse(responseCode = "200", description = "Succes | OK")
     @GetMapping("/patHistory/list/{patId}")
     public List<PatientHistory> getAllNotesByPatientId(@Parameter(description = "Patient ID", required = true) @PathVariable("patId") Integer patId) {
         List<PatientHistory> patientHistories = patientHistoryService.getNotesByPatientId(patId);
         log.info("Patient histories returned by the controller: {}", patientHistories);
         return patientHistories;
 
+    }
+    @Operation(summary = "Shows all notes", tags = {"Patient History Management System"})
+    @ApiResponse(responseCode = "200", description = "Succes | OK")
+    @GetMapping("/patHistory/list")
+    public List<PatientHistory> getAllNotes() {
+        List<PatientHistory> patientHistories = patientHistoryService.getAllNotes();
+        log.info("Patient histories returned by the controller: {}", patientHistories);
+        return patientHistories;
     }
 
     @Operation(summary = "Shows Note by Id", tags = {"Patient History Management System"})
@@ -41,7 +50,6 @@ public class PatientHistoryController {
         return patientHistories;
 
     }
-
 
     @PostMapping("/patHistory/add")
     @Operation(summary = "Add patient note", description = "Validates the information from the add new patient note form and adds it to the database.", tags = {"Patient History Management System"})

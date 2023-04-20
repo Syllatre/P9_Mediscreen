@@ -5,11 +5,14 @@ import com.mediscreen.patientHistory.model.PatientHistory;
 import com.mediscreen.patientHistory.repository.PatientHistoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.mongodb.core.query.Query;
 
 @Slf4j
 @AllArgsConstructor
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class PatientHistoryService {
 
     private PatientHistoryRepository patientHistoryRepository;
+
+    private MongoTemplate mongoTemplate;
 
     public PatientHistory create(Integer patId, String note) {
         LocalDate dateNow = LocalDate.now();
@@ -47,6 +52,9 @@ public class PatientHistoryService {
         return note.get();
     }
 
+    public List<PatientHistory> getAllNotes(){
+       return patientHistoryRepository.findAll();
+    }
     public PatientHistory updateNote(PatientHistory patientHistory) {
 
         Optional<PatientHistory> patientHistoryPresent = patientHistoryRepository.findById(patientHistory.getId());
@@ -54,6 +62,16 @@ public class PatientHistoryService {
         updatePatientHistory.setNote(patientHistory.getNote());
         patientHistoryRepository.save(updatePatientHistory);
         return updatePatientHistory;
+    }
+
+
+
+    public void insertData(List<PatientHistory> patientHistories) {
+        mongoTemplate.insertAll(patientHistories);
+    }
+
+    public void removeAllData() {
+        mongoTemplate.remove(new Query(), PatientHistory.class);
     }
 
 }

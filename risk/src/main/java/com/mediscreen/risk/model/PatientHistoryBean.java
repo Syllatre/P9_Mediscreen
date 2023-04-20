@@ -1,8 +1,7 @@
-package com.mediscreen.WebApp.model;
+package com.mediscreen.risk.model;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -14,11 +13,7 @@ public class PatientHistoryBean {
 
 
     private String id;
-
-    private Integer idPatient;
-
-    @NotBlank
+    private Integer patId;
     private String note;
-
     private LocalDate date;
 }

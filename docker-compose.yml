@@ -11,7 +11,7 @@ services:
       HISTORY_FEIGN_URL: patient-history:8082
     depends_on:
       - patient
-      - patient-history
+      - patienthistory
     ports:
       - 8080:8080
     volumes:
@@ -37,19 +37,19 @@ services:
     networks:
       - mediscreen
 
-  patient-history:
+  patienthistory:
     depends_on:
       - notes-db
     build:
       context: patientHistory
       dockerfile: Dockerfile
-    container_name: patient-history
+    container_name: patienthistory
     environment:
       MONGODB_URL: notes-db:27017
     ports:
       - 8082:8082
     volumes:
-      - /logp:/patient-history/logs
+      - /logp:/patienthistory/logs
     networks:
       - mediscreen
 

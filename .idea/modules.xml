@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/WebApp/WebApp.iml" filepath="$PROJECT_DIR$/WebApp/WebApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/patient/patient.iml" filepath="$PROJECT_DIR$/patient/patient.iml" />
       <module fileurl="file://$PROJECT_DIR$/patientHistory/patientHistory.iml" filepath="$PROJECT_DIR$/patientHistory/patientHistory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/risk/risk.iml" filepath="$PROJECT_DIR$/risk/risk.iml" />
     </modules>
   </component>
 </project>

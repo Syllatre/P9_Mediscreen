@@ -22,6 +22,7 @@
                 <th>Phone Number</th>
                 <th>Address</th>
                 <th>History</th>
+                <th>Risk</th>
                 <th></th>
             </tr>
             </thead>
@@ -36,6 +37,9 @@
                 <td th:text="${p.address}">
                 <td>
                     <a th:href="@{/patHistory/list/{patId}(patId=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>
+                </td>
+                <td>
+                    <a th:href="@{/assess/risk/{idPatient}(idPatient=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>
                 </td>
                 <td>
                     <a th:href="@{/patients/update/{id}(id=${p.idPatient})}">Edit</a>&nbsp;|&nbsp;

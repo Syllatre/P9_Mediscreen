@@ -37,8 +37,6 @@ public class Patient {
     private String surname;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Past(message = "You can't choose date after today")
     @Column(name = "date_naissance")
     private LocalDate dateOfBirthday;
