@@ -16,7 +16,7 @@
         <h4 th:text="'Patient: ' + ${patientHistory.firstName} + ' ' + ${patientHistory.surname}"></h4>
     </div>
     <div class="row">
-        <form action="#" th:action="@{/patHistory/add/{idPatient}(idPatient=${patientHistory.idPatient})}" th:object="${patientHistory}" method="post" class="form-horizontal" style="width:100">
+        <form action="#" th:action="@{/pathistory/add/{idPatient}(idPatient=${patientHistory.idPatient})}" th:object="${patientHistory}" method="post" class="form-horizontal" style="width:100">
 
         <label for="noteText"> </label>
             <input class="form-control my-3 bg-light" id="noteText" placeholder="noteText" type="text" autofocus note="noteText"
@@ -24,7 +24,7 @@
             <span class="has-error" th:if="${#fields.hasErrors('noteText')}" th:errors="*{noteText}"></span>
             <div class="row">
                 <div class="col sm-12">
-                    <a th:href="@{/patHistory/list/{idPatient}(idPatient=${patientHistory.idPatient})}" class="btn btn-danger btn-sm">Cancel</a>
+                    <a th:href="@{/pathistory/list/{idPatient}(idPatient=${patientHistory.idPatient})}" class="btn btn-danger btn-sm">Cancel</a>
                     <button class="btn btn-primary btn-sm" type="submit">Add Note</button>
                 </div>
             </div>

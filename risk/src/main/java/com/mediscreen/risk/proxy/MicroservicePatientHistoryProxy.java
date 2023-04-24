@@ -9,6 +9,6 @@ import java.util.List;
 @FeignClient(name = "patientHistory", url = "${proxy.note}")
 public interface MicroservicePatientHistoryProxy {
 
-    @GetMapping("/patHistory/list")
+    @GetMapping("/pathistory/list")
     public List<PatientHistoryBean> getAllNotes();
 }
