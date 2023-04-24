@@ -52,7 +52,7 @@ public class PatientHistoryIT {
 
     @Test
     public void testGetAllNotesByPatientId() throws Exception {
-        mockMvc.perform(get("/patHistory/list/{patId}", 1))
+        mockMvc.perform(get("/pathistory/list/{patId}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].note").value(patientHistory1.getNote()));
@@ -60,14 +60,14 @@ public class PatientHistoryIT {
 
     @Test
     public void testGeNotesById() throws Exception {
-        mockMvc.perform(get("/patHistory/NoteById/{id}", patientHistory1.getId()))
+        mockMvc.perform(get("/pathistory/NoteById/{id}", patientHistory1.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.note").value(patientHistory1.getNote()));
     }
 
     @Test
     public void testCreate() throws Exception {
-        mockMvc.perform(post("/patHistory/add")
+        mockMvc.perform(post("/pathistory/add")
                         .param("patId", "1")
                         .param("note", "Test note"))
                 .andExpect(status().isCreated())

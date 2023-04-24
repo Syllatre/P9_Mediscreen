@@ -25,7 +25,7 @@ public class PatientHistoryController {
 
     @Operation(summary = "Shows all notes by Id patient", tags = {"Patient History Management System"})
     @ApiResponse(responseCode = "200", description = "Succes | OK")
-    @GetMapping("/patHistory/list/{patId}")
+    @GetMapping("/pathistory/list/{patId}")
     public List<PatientHistory> getAllNotesByPatientId(@Parameter(description = "Patient ID", required = true) @PathVariable("patId") Integer patId) {
         List<PatientHistory> patientHistories = patientHistoryService.getNotesByPatientId(patId);
         log.info("Patient histories returned by the controller: {}", patientHistories);
@@ -34,7 +34,7 @@ public class PatientHistoryController {
     }
     @Operation(summary = "Shows all notes", tags = {"Patient History Management System"})
     @ApiResponse(responseCode = "200", description = "Succes | OK")
-    @GetMapping("/patHistory/list")
+    @GetMapping("/pathistory/list")
     public List<PatientHistory> getAllNotes() {
         List<PatientHistory> patientHistories = patientHistoryService.getAllNotes();
         log.info("Patient histories returned by the controller: {}", patientHistories);
@@ -43,7 +43,7 @@ public class PatientHistoryController {
 
     @Operation(summary = "Shows Note by Id", tags = {"Patient History Management System"})
     @ApiResponse(responseCode = "200", description = "Succes | OK")
-    @GetMapping("/patHistory/NoteById/{id}")
+    @GetMapping("/pathistory/NoteById/{id}")
     public PatientHistory geNotesById(@Parameter(description = "Note ID", required = true) @PathVariable("id") String id) {
         PatientHistory patientHistories = patientHistoryService.getNoteById(id);
         log.info("Note returned by the controller: {}", patientHistories);
@@ -51,7 +51,7 @@ public class PatientHistoryController {
 
     }
 
-    @PostMapping("/patHistory/add")
+    @PostMapping("/pathistory/add")
     @Operation(summary = "Add patient note", description = "Validates the information from the add new patient note form and adds it to the database.", tags = {"Patient History Management System"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Patient note added successfully"),
@@ -64,7 +64,7 @@ public class PatientHistoryController {
     }
 
 
-    @PutMapping("/patHistory/update")
+    @PutMapping("/pathistory/update")
     @Operation(summary = "Update Patient history", description = "Validates the information of the modification form of a patient and updates the data of the corresponding patient.", tags = {"Patient History Management System"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "302", description = "Successfully modified patient"),
@@ -81,7 +81,7 @@ public class PatientHistoryController {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "404", description = "Patient not found")
     })
-    @DeleteMapping("/patHistory/delete/{id}")
+    @DeleteMapping("/pathistory/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatientNote(@Parameter(description = "Note ID", required = true) @PathVariable("id") String id) {
         patientHistoryService.delete(id);

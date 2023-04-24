@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +24,7 @@ public class RiskService {
         return notes.stream()
                 .map(note -> note.getNote().toLowerCase())
                 .flatMap(recommendation -> Keyword.KEYWORD_LIST.stream()
-                        .filter(keyword -> recommendation.contains(keyword)))
+                        .filter(recommendation::contains))
                 .mapToInt(keyword -> 1)
                 .sum();
     }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Home</title>
@@ -36,7 +36,7 @@
                 <td th:text="${p.phoneNumber}"></td>
                 <td th:text="${p.address}">
                 <td>
-                    <a th:href="@{/patHistory/list/{patId}(patId=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>
+                    <a th:href="@{/pathistory/list/{patId}(patId=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>
                 </td>
                 <td>
                     <a th:href="@{/assess/risk/{idPatient}(idPatient=${p.idPatient})}" class="btn btn-primary btn-sm">Display</a>

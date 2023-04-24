@@ -57,7 +57,7 @@ public class PatientHistoryControllerTest {
 
         when(patientHistoryService.getNotesByPatientId(1)).thenReturn(patientHistories);
 
-        mockMvc.perform(get("/patHistory/list/1"))
+        mockMvc.perform(get("/pathistory/list/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is("note1")))
@@ -79,7 +79,7 @@ public class PatientHistoryControllerTest {
 
         when(patientHistoryService.getNoteById("note1")).thenReturn(note);
 
-        mockMvc.perform(get("/patHistory/NoteById/note1"))
+        mockMvc.perform(get("/pathistory/NoteById/note1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("note1")))
                 .andExpect(jsonPath("$.patId", is(1)))
@@ -103,7 +103,7 @@ public class PatientHistoryControllerTest {
         when(patientHistoryService.create(patId, note)).thenReturn(expectedPatientHistory);
 
         // Send a POST request to create a new patient note
-        mockMvc.perform(post("/patHistory/add")
+        mockMvc.perform(post("/pathistory/add")
                         .param("patId", patId.toString())
                         .param("note", note))
                 .andExpect(status().isCreated())
@@ -123,7 +123,7 @@ public class PatientHistoryControllerTest {
 
         when(patientHistoryService.updateNote(any(PatientHistory.class))).thenReturn(patientHistory);
 
-        mockMvc.perform(put("/patHistory/update")
+        mockMvc.perform(put("/pathistory/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(patientHistory)))
                 .andExpect(status().isOk())
@@ -138,7 +138,7 @@ public class PatientHistoryControllerTest {
     void deletePatientNote() throws Exception {
         String id = "note1";
 
-        mockMvc.perform(delete("/patHistory/delete/" + id))
+        mockMvc.perform(delete("/pathistory/delete/" + id))
                 .andExpect(status().isNoContent());
 
         verify(patientHistoryService, times(1)).delete(id);

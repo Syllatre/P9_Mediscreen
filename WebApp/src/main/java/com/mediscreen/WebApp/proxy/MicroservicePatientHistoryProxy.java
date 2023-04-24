@@ -6,26 +6,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "patientHistory", url = "${feign.url.history}")
+@FeignClient(name = "patientHistory", url = "${proxy.note}")
 public interface MicroservicePatientHistoryProxy {
 
 
-    @GetMapping(value = "/patHistory/list/{patId}")
+    @GetMapping(value = "/pathistory/list/{patId}")
     List<PatientHistoryBean> getAllNotesByPatientId(@PathVariable("patId") Integer patId);
 
 
-    @GetMapping("/patHistory/NoteById/{id}")
+    @GetMapping("/pathistory/NoteById/{id}")
     PatientHistoryBean geNotesById(@PathVariable("id") String id);
 
 
-    @PostMapping("/patHistory/add")
+    @PostMapping("/pathistory/add")
     public PatientHistoryBean create(@RequestParam("patId") Integer patId, @RequestParam String note);
 
 
-    @PutMapping("/patHistory/update")
+    @PutMapping("/pathistory/update")
     PatientHistoryBean updatePatientHistory(@RequestBody PatientHistoryBean patientHistory);
 
-    @DeleteMapping("/patHistory/delete/{id}")
+    @DeleteMapping("/pathistory/delete/{id}")
     void deletePatientNote(@PathVariable("id") String id);
 
 }
