@@ -20,7 +20,7 @@ public class PatientBean {
 
         @NotEmpty(message = "you must enter your first name")
         private String firstName;
-        @NotEmpty(message = "you must enter your name")
+        @NotEmpty(message = "you must enter your surname")
         private String surname;
         @NotNull
         @DateTimeFormat(pattern = "yyyy-MM-dd")

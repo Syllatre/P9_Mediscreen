@@ -56,9 +56,13 @@ public class PatientServiceTest {
 
     @Test
     void delete_NotFound() {
-        when(patientRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> patientService.delete(1));
+        int nonExistentId = 3;
+        when(patientRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> patientService.delete(nonExistentId));
+        assertTrue(exception.getMessage().contains("patientId 3 non trouvé"));
     }
+
 
     @Test
     void findById() {

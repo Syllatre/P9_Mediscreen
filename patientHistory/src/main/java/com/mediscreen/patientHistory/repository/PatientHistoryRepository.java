@@ -2,7 +2,6 @@ package com.mediscreen.patientHistory.repository;
 
 import com.mediscreen.patientHistory.model.PatientHistory;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

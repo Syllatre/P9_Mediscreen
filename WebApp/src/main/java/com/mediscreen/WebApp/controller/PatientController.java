@@ -2,14 +2,15 @@ package com.mediscreen.WebApp.controller;
 
 import com.mediscreen.WebApp.model.PatientBean;
 import com.mediscreen.WebApp.proxy.MicroservicePatientProxy;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PatientController {
     @GetMapping("/patients/list")
     public String getAllPatient(Model model) {
         List<PatientBean> patients = patientService.getAllPatient();
-        model.addAttribute("patients",patients);
+        model.addAttribute("patients", patients);
         log.info("Display patient List");
         return "patients/list";
     }
@@ -68,7 +69,7 @@ public class PatientController {
             return "patients/update";
         }
         PatientBean updated = patientService.updatePatient(patient);
-        if (updated.getIdPatient() == null) {
+        if (updated == null || updated.getIdPatient() == null) {
             System.out.println("id not found");
         }
 
@@ -78,7 +79,7 @@ public class PatientController {
     }
 
     @GetMapping("/patients/delete/{idPatient}")
-    public String deletePatient(@PathVariable("idPatient") Integer id,Model model) {
+    public String deletePatient(@PathVariable("idPatient") Integer id, Model model) {
         patientService.deletePatient(id);
         model.addAttribute("patients", patientService.getAllPatient());
         log.info("Patient " + id + " was deleted");

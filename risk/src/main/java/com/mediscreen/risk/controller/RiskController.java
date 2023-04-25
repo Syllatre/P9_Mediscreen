@@ -1,8 +1,6 @@
 package com.mediscreen.risk.controller;
 
 import com.mediscreen.risk.model.DTO.PatientDiabetes;
-import com.mediscreen.risk.model.PatientBean;
-import com.mediscreen.risk.proxy.MicroservicePatientProxy;
 import com.mediscreen.risk.service.RiskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

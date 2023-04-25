@@ -76,7 +76,7 @@ public class PatientHistoryController {
             return "pathistory/update";
         }
         PatientHistoryBean updated = patientHistoryProxy.updatePatientHistory(new PatientHistoryBean(id,idPatient,patientHistory.getNoteText(),null));
-        if (updated.getId() == null) {
+        if (updated == null || updated.getId() == null) {
             System.out.println("id not found");
         }
 

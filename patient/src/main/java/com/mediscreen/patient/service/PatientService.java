@@ -23,9 +23,6 @@ public class PatientService {
 
     public void delete( Integer idPatient) {
         Patient patientFind = findById(idPatient);
-        if (patientFind == null) {
-            throw new NotFoundException("Patient not found");
-        }
         patientRepository.deleteById(idPatient);
     }
 
