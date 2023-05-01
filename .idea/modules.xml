@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/P9_Mediscreen.iml" filepath="$PROJECT_DIR$/.idea/P9_Mediscreen.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebApp/WebApp.iml" filepath="$PROJECT_DIR$/WebApp/WebApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my-parent-project/my-parent-project.iml" filepath="$PROJECT_DIR$/my-parent-project/my-parent-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my-super-parent-project/my-super-parent-project.iml" filepath="$PROJECT_DIR$/my-super-parent-project/my-super-parent-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/patient/patient.iml" filepath="$PROJECT_DIR$/patient/patient.iml" />
       <module fileurl="file://$PROJECT_DIR$/patientHistory/patientHistory.iml" filepath="$PROJECT_DIR$/patientHistory/patientHistory.iml" />
       <module fileurl="file://$PROJECT_DIR$/risk/risk.iml" filepath="$PROJECT_DIR$/risk/risk.iml" />

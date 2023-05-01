@@ -13,7 +13,7 @@
         <module name="patient" />
         <module name="patientHistory" />
       </profile>
-      <profile name="Annotation profile for WebApp" enabled="true">
+      <profile name="Annotation profile for Mediscreen Parent" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -28,6 +28,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="my-parent-project" target="11" />
+      <module name="my-super-parent-project" target="1.8" />
       <module name="patient" target="11" />
       <module name="patientHistory" target="11" />
       <module name="risk" target="11" />

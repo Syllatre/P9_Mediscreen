@@ -10,6 +10,8 @@
         <option value="$PROJECT_DIR$/patientHistory/pom.xml" />
         <option value="$PROJECT_DIR$/WebApp/pom.xml" />
         <option value="$PROJECT_DIR$/risk/pom.xml" />
+        <option value="$PROJECT_DIR$/my-parent-project/pom.xml" />
+        <option value="$PROJECT_DIR$/my-super-parent-project/pom.xml" />
       </list>
     </option>
   </component>
